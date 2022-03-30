@@ -9,5 +9,8 @@
 	border:2px solid green;
 	margin:auto;
 	width:100px;
-	
+
+}
+.hidden{
+	display: none;
 }
