@@ -11,21 +11,23 @@ function new_item(draw, x, y) {
     let rect = draw.rect(w, h);
     rect.addClass('rect');
     el.add(rect);
-    let path = build_x(draw);
-    let path1 = build_x(draw);
-    el.add(path1);
-    el.add(path);
+    let el_x = build_x(draw);
+    let el_0 = build_0(draw);
+    el.add(el_x);
+    el.add(el_0);
 
     switch (state[x][y]) {
         case 0:
             rect.fill(b0);
-            path.addClass('hidden');
+            el_x.addClass('hidden');
             break;
         case 1:
             rect.fill(bx);
+            el_0.addClass('hidden');
             break;
         default:
-            path.addClass('hidden');
+            el_x.addClass('hidden');
+            el_0.addClass('hidden');
             rect.fill(background);
     }
     el.on('click', function () { next_step(el, x, y) });
@@ -61,20 +63,55 @@ function new_game() {
     console.log('new game end');
 }
 function build_x(draw) {
-    let path = draw.path('M 1000 1000 L 2000 2000');
-    let path1 = draw.path('M 2000 1000 L 1000 2000');
-    path.stroke({ color: 'black', width: 4, linecap: 'round', linejoin: 'round' });
-    path1.stroke({ color: 'black', width: 4, linecap: 'round', linejoin: 'round' });
-    //path.fill('#f06',);
-    path.addClass('x');
-    path1.addClass('x');
-    return path
+    let el = draw.group();
+    let l1 = draw.path('M24,16 L122,132');
+    let l2 = draw.path('M122,16 L24,132');
+    l1.stroke({ color: 'black', width: 8, linecap: 'round', linejoin: 'round' });
+    l2.stroke({ color: 'black', width: 8, linecap: 'round', linejoin: 'round' });
+    el.add(l1);
+    el.add(l2);
+
+    el.addClass('x');
+    return el;
 
 }
-function build_o(draw) {
-    let circle = draw.circle(cx = '400', cy = '300', r = '200');
-    circle.stroke({color:'black',width:4,})
-    circle.addClass('o');
+function build_0(draw) {
+    let circle = draw.ellipse(80,112).fill('transparent').move(34, 16);
+    circle.stroke({color:'black',width:8})
+    circle.addClass('0');
     return circle
 }
-draw_field(draw);
+function build_cross_line(draw, cross_num) {
+    let line;
+    switch (cross_num) {
+        case 0:
+            line = draw.path('M16,74 L432,38');
+            break;
+        case 1:
+            line = draw.path('M16,164 L432,222');
+            break;
+        case 2:
+            line = draw.path('M 16,370 L 432,392');
+            break;
+        case 3:
+            line = draw.path('M 48,16 L 74,432');
+            break;
+        case 4:
+            line = draw.path('M196,16 L222,432');
+            break;
+        case 5:
+            line = draw.path('M340,16 L374,432');
+            break;
+        case 6:
+            line = draw.path('M16,24 L432,410');
+            break;
+        case 7:
+            line = draw.path('M 16,420 L 432,34')
+        default:
+            console.log("unexpected param value :" + cross_num)
+    }
+
+    line.stroke({ color: 'red', width: 8, linecap: 'round', linejoin: 'round' });
+    return line;
+}
+console.log(draw_field(draw));

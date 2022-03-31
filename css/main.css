@@ -1,9 +1,9 @@
 #board {
-	border: 2px solid black;
+	/*border: 2px solid black;*/
 	width: 448px;
 	height: 448px;
 	margin: auto;
-	background-color: blue;
+	/*background-color: blue;*/
 }
 #button{
 	border:2px solid green;
