@@ -1,14 +1,15 @@
 const w = 148;
 const h = 148;
 const background = '#14bdac';
-const state = [[-1, -1, -1], [-1, -1, -1], [-1, -1, -1]];
+const state = [-1, -1, -1, -1, -1, -1, -1, -1, -1];
 const b0 = 'green';
 const bx = 'red';
 let draw = SVG().addTo('#board').size('450', '450');
 
-function new_item(draw, x, y) {
+function new_item(draw, i) {
     let el = draw.group();
     let rect = draw.rect(w, h);
+    rect.fill(background);
     rect.addClass('rect');
     el.add(rect);
     let el_x = build_x(draw);
@@ -16,51 +17,44 @@ function new_item(draw, x, y) {
     el.add(el_x);
     el.add(el_0);
 
-    switch (state[x][y]) {
+    switch (state[i]) {
         case 0:
-            rect.fill(b0);
             el_x.addClass('hidden');
             break;
         case 1:
-            rect.fill(bx);
             el_0.addClass('hidden');
             break;
         default:
             el_x.addClass('hidden');
             el_0.addClass('hidden');
-            rect.fill(background);
     }
-    el.on('click', function () { next_step(el, x, y) });
+    el.on('click', function () { next_step(el, i) });
     return el;
 }
 
 function draw_field(draw) {
-    new_item(draw, 0, 0)
-    new_item(draw, 0, 1).move(w + 2, 0)
-    new_item(draw, 0, 2).move(2 * (w + 2), 0)
-    new_item(draw, 1, 0).move(0, h + 2)
-    new_item(draw, 1, 1).move(w + 2, h + 2)
-    new_item(draw, 1, 2).move(2 * (w + 2), h + 2)
-    new_item(draw, 2, 0).move(0, 2 * (h + 2))
-    new_item(draw, 2, 1).move(w + 2, 2 * (h + 2))
-    new_item(draw, 2, 2).move(2 * (w + 2), 2 * (h + 2))
+    new_item(draw, 0)
+    new_item(draw, 1).move(w + 2, 0)
+    new_item(draw, 2).move(2 * (w + 2), 0)
+    new_item(draw, 3).move(0, h + 2)
+    new_item(draw, 4).move(w + 2, h + 2)
+    new_item(draw, 5).move(2 * (w + 2), h + 2)
+    new_item(draw, 6).move(0, 2 * (h + 2))
+    new_item(draw, 7).move(w + 2, 2 * (h + 2))
+    new_item(draw, 8).move(2 * (w + 2), 2 * (h + 2))
 }
 
-var next_step = function (el, x, y) {
-    if (state[x][y] == -1) {
-        state[x][y] = 1;
+var next_step = function (el, i) {
+    if (state[i] == -1) {
+        state[i] = 1;
         el.find('.x').removeClass('hidden');
     }
 }
 function new_game() {
-    console.log('new game start');
-    for (i = 0; i < 3; ++i) {
-        for (j = 0; j < 3; ++j) {
-            state[i][j] = -1
-        }
+    for (let i = 0; i < 9; ++i) {
+        state[i] = -1
     }
     draw_field(draw);
-    console.log('new game end');
 }
 function build_x(draw) {
     let el = draw.group();
@@ -76,9 +70,9 @@ function build_x(draw) {
 
 }
 function build_0(draw) {
-    let circle = draw.ellipse(80,112).fill('transparent').move(34, 16);
-    circle.stroke({color:'black',width:8})
-    circle.addClass('0');
+    let circle = draw.ellipse(80, 112).fill('transparent').move(34, 16);
+    circle.stroke({ color: 'black', width: 8 })
+    circle.addClass('o');
     return circle
 }
 function build_cross_line(draw, cross_num) {
@@ -106,7 +100,8 @@ function build_cross_line(draw, cross_num) {
             line = draw.path('M16,24 L432,410');
             break;
         case 7:
-            line = draw.path('M 16,420 L 432,34')
+            line = draw.path('M 16,420 L 432,34');
+            break;
         default:
             console.log("unexpected param value :" + cross_num)
     }
@@ -114,4 +109,4 @@ function build_cross_line(draw, cross_num) {
     line.stroke({ color: 'red', width: 8, linecap: 'round', linejoin: 'round' });
     return line;
 }
-console.log(draw_field(draw));
+new_game();

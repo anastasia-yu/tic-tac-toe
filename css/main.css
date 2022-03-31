@@ -5,10 +5,10 @@
 	margin: auto;
 	/*background-color: blue;*/
 }
-#button{
-	border:2px solid green;
+.new_game{
+	/* border:2px; */
 	margin:auto;
-	width:100px;
+	width:200px;
 
 }
 .hidden{
